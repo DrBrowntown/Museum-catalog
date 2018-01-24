@@ -15,6 +15,10 @@ import json
 from flask import make_response
 import requests
 
+import logging
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
+
 auth = HTTPBasicAuth()
 app = Flask(__name__)
 
@@ -339,30 +343,31 @@ def editZone(zone_id):
     if request.method == 'POST':
         if request.form['name']:
             editedZone.name = request.form['name']
-            flash('Zone Successfully Edited %s' % editedZone.name)
+            flash('Zone Successfully Edited. Now named: %s' % editedZone.name)
             return redirect(url_for('showZones'))
     else:
         return render_template('editZone.html', zone=editedZone)
 
 
-# Delete a restaurant
-# @app.route('/restaurant/<int:restaurant_id>/delete/', methods=['GET', 'POST'])
-# def deleteRestaurant(restaurant_id):
-#     restaurantToDelete = session.query(
-#         Restaurant).filter_by(id=restaurant_id).one()
-#     if 'username' not in login_session:
-#         return redirect('/login')
-#     if restaurantToDelete.user_id != login_session['user_id']:
-#         return "<script>function myFunction() {alert('You are not authorized to delete this restaurant. Please create your own restaurant in order to delete.');}</script><body onload='myFunction()'>"
-#     if request.method == 'POST':
-#         session.delete(restaurantToDelete)
-#         flash('%s Successfully Deleted' % restaurantToDelete.name)
-#         session.commit()
-#         return redirect(url_for('showRestaurants', restaurant_id=restaurant_id))
-#     else:
-#         return render_template('deleteRestaurant.html', restaurant=restaurantToDelete)
+# Delete a zone
+@app.route('/zone/<int:zone_id>/delete/', methods=['GET', 'POST'])
+def deleteZone(zone_id):
+    zoneToDelete = session.query(
+        Zone).filter_by(id=zone_id).one()
 
-# Show a restaurant menu
+    if 'username' not in login_session:
+        return redirect('/login')
+    if zoneToDelete.user_id != login_session['user_id']:
+        return "<script>function myFunction() {alert('You are not authorized to delete this Zone. Please create your own Zone in order to delete.');}</script><body onload='myFunction()'>"
+    if request.method == 'POST':
+        session.delete(zoneToDelete)
+        flash('%s Successfully Deleted' % zoneToDelete.name)
+        session.commit()
+        return redirect(url_for('showZones', zone_id=zone_id))
+    else:
+        return render_template('deleteZone.html', zone=zoneToDelete)
+
+# Show objects within selected zone.
 
 
 @app.route('/zones/<int:zone_id>/')
@@ -378,68 +383,81 @@ def showObjects(zone_id):
         return render_template('objects.html', objects=objects, zone=zone, creator=creator)
 
 
-# Create a new menu item
-# @app.route('/restaurant/<int:restaurant_id>/menu/new/', methods=['GET', 'POST'])
-# def newMenuItem(restaurant_id):
-#     if 'username' not in login_session:
-#         return redirect('/login')
-#     restaurant = session.query(Restaurant).filter_by(id=restaurant_id).one()
-#     if login_session['user_id'] != restaurant.user_id:
-#         return "<script>function myFunction() {alert('You are not authorized to add menu items to this restaurant. Please create your own restaurant in order to add items.');}</script><body onload='myFunction()'>"
-#         if request.method == 'POST':
-#             newItem = MenuItem(name=request.form['name'], description=request.form['description'], price=request.form[
-#                                'price'], course=request.form['course'], restaurant_id=restaurant_id, user_id=restaurant.user_id)
-#             session.add(newItem)
-#             session.commit()
-#             flash('New Menu %s Item Successfully Created' % (newItem.name))
-#             return redirect(url_for('showMenu', restaurant_id=restaurant_id))
-#     else:
-#         return render_template('newmenuitem.html', restaurant_id=restaurant_id)
 
-# # Edit a menu item
+# Create a new object
+@app.route('/zone/<int:zone_id>/object/new/', methods=['GET', 'POST'])
+def newObject(zone_id):
+    if 'username' not in login_session:
+        return redirect('/login')
+    zone = session.query(Zone).filter_by(id=zone_id).one()
+    if login_session['user_id'] != zone.user_id:
+        return "<script>function myFunction() {alert('You are not authorized to add objects to this Zone. Please create your own Zone in order to add Objects.');}</script><body onload='myFunction()'>"
+        if request.method == 'POST':
+           
+            newObjectItem = Object(
+                extension=request.form['extension'], 
+                accession=request.form['accession'], 
+                name=request.form['name'], 
+                dimensions=request.form['dimensions'], 
+                mount=request.form['mount'], 
+                misc=request.form['misc'], 
+                zone_id=zone_id, 
+                user_id=zone.user_id
+                )
+            session.add(newObjectItem)
+            session.commit()
+            flash('New Object: %s Successfully Created' % (newObjectItem.name))
+            return redirect(url_for('showObjects', zone_id=zone_id))
+    else:
+        return render_template('newObject.html', zone_id=zone_id)
 
-
-# @app.route('/restaurant/<int:restaurant_id>/menu/<int:menu_id>/edit', methods=['GET', 'POST'])
-# def editMenuItem(restaurant_id, menu_id):
-#     if 'username' not in login_session:
-#         return redirect('/login')
-#     editedItem = session.query(MenuItem).filter_by(id=menu_id).one()
-#     restaurant = session.query(Restaurant).filter_by(id=restaurant_id).one()
-#     if login_session['user_id'] != restaurant.user_id:
-#         return "<script>function myFunction() {alert('You are not authorized to edit menu items to this restaurant. Please create your own restaurant in order to edit items.');}</script><body onload='myFunction()'>"
-#     if request.method == 'POST':
-#         if request.form['name']:
-#             editedItem.name = request.form['name']
-#         if request.form['description']:
-#             editedItem.description = request.form['description']
-#         if request.form['price']:
-#             editedItem.price = request.form['price']
-#         if request.form['course']:
-#             editedItem.course = request.form['course']
-#         session.add(editedItem)
-#         session.commit()
-#         flash('Menu Item Successfully Edited')
-#         return redirect(url_for('showMenu', restaurant_id=restaurant_id))
-#     else:
-#         return render_template('editmenuitem.html', restaurant_id=restaurant_id, menu_id=menu_id, item=editedItem)
+# Edit an object.
 
 
-# # Delete a menu item
-# @app.route('/restaurant/<int:restaurant_id>/menu/<int:menu_id>/delete', methods=['GET', 'POST'])
-# def deleteMenuItem(restaurant_id, menu_id):
-#     if 'username' not in login_session:
-#         return redirect('/login')
-#     restaurant = session.query(Restaurant).filter_by(id=restaurant_id).one()
-#     itemToDelete = session.query(MenuItem).filter_by(id=menu_id).one()
-#     if login_session['user_id'] != restaurant.user_id:
-#         return "<script>function myFunction() {alert('You are not authorized to delete menu items to this restaurant. Please create your own restaurant in order to delete items.');}</script><body onload='myFunction()'>"
-#     if request.method == 'POST':
-#         session.delete(itemToDelete)
-#         session.commit()
-#         flash('Menu Item Successfully Deleted')
-#         return redirect(url_for('showMenu', restaurant_id=restaurant_id))
-#     else:
-#         return render_template('deleteMenuItem.html', item=itemToDelete)
+@app.route('/zone/<int:zone_id>/object/<int:object_id>/edit', methods=['GET', 'POST'])
+def editObject(zone_id, object_id):
+    if 'username' not in login_session:
+        return redirect('/login')
+    editedObject = session.query(Object).filter_by(id=object_id).one()
+    zone = session.query(Zone).filter_by(id=zone_id).one()
+    if login_session['user_id'] != zone.user_id:
+        return "<script>function myFunction() {alert('You are not authorized to edit objects to this Zone. Please create your own Zone in order to edit objects.');}</script><body onload='myFunction()'>"
+    if request.method == 'POST':
+        if request.form['name']:
+            editedObject.name = request.form['name']
+        if request.form['dimensions']:
+            editedObject.dimensions = request.form['dimensions']
+        if request.form['extension']:
+            editedObject.extension = request.form['extension']
+        if request.form['mount']:
+            editedObject.mount = request.form['mount']
+        if request.form['misc']:
+            editedObject.misc = request.form['misc']
+        session.add(editedObject)
+        session.commit()
+        flash('Object Successfully Edited')
+        return redirect(url_for('showObjects', zone_id=zone_id))
+    else:
+        return render_template('editObject.html', zone_id=zone_id, object_id=object_id, object=editedObject)
+
+
+# # Delete a Object
+@app.route('/zone/<int:zone_id>/object/<int:object_id>/delete', methods=['GET', 'POST'])
+def deleteObject(zone_id, object_id):
+    if 'username' not in login_session:
+        return redirect('/login')
+    zone = session.query(Zone).filter_by(id=zone_id).one()
+    objectToDelete = session.query(Object).filter_by(id=object_id).one()
+    if login_session['user_id'] != zone.user_id:
+        return "<script>function myFunction() {alert('You are not authorized to delete objects to this Zone. Please create your own Zone in order to delete objects.');}</script><body onload='myFunction()'>"
+    if request.method == 'POST':
+
+        session.delete(objectToDelete)
+        session.commit()
+        flash('Object Successfully Deleted')
+        return redirect(url_for('showObjects', zone_id=zone_id))
+    else:
+        return render_template('deleteObject.html', object=objectToDelete)
 
 
 # Disconnect based on provider

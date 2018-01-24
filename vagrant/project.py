@@ -308,22 +308,22 @@ def showZones():
     else:
         return render_template('zones.html', zones=zones)
 
-# Create a new restaurant
+# Create a new zone
 
 
-# @app.route('/restaurant/new/', methods=['GET', 'POST'])
-# def newRestaurant():
-#     if 'username' not in login_session:
-#         return redirect('/login')
-#     if request.method == 'POST':
-#         newRestaurant = Restaurant(
-#             name=request.form['name'], user_id=login_session['user_id'])
-#         session.add(newRestaurant)
-#         flash('New Restaurant %s Successfully Created' % newRestaurant.name)
-#         session.commit()
-#         return redirect(url_for('showRestaurants'))
-#     else:
-#         return render_template('newRestaurant.html')
+@app.route('/zone/new/', methods=['GET', 'POST'])
+def newZone():
+    if 'username' not in login_session:
+        return redirect('/login')
+    if request.method == 'POST':
+        newZone = Zone(
+            name=request.form['name'], user_id=login_session['user_id'])
+        session.add(newZone)
+        flash('New Zone %s Successfully Created' % newZone.name)
+        session.commit()
+        return redirect(url_for('showZones'))
+    else:
+        return render_template('newZone.html')
 
 # # Edit a restaurant
 
@@ -459,10 +459,10 @@ def disconnect():
         del login_session['user_id']
         del login_session['provider']
         flash("You have successfully been logged out.")
-        return redirect(url_for('showRestaurants'))
+        return redirect(url_for('showZones'))
     else:
         flash("You were not logged in")
-        return redirect(url_for('showRestaurants'))
+        return redirect(url_for('showZones'))
 
 
 if __name__ == '__main__':

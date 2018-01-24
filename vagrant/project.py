@@ -325,24 +325,24 @@ def newZone():
     else:
         return render_template('newZone.html')
 
-# # Edit a restaurant
+# # Edit a Zone
 
 
-# @app.route('/restaurant/<int:restaurant_id>/edit/', methods=['GET', 'POST'])
-# def editRestaurant(restaurant_id):
-#     editedRestaurant = session.query(
-#         Restaurant).filter_by(id=restaurant_id).one()
-#     if 'username' not in login_session:
-#         return redirect('/login')
-#     if editedRestaurant.user_id != login_session['user_id']:
-#         return "<script>function myFunction() {alert('You are not authorized to edit this restaurant. Please create your own restaurant in order to edit.');}</script><body onload='myFunction()'>"
-#     if request.method == 'POST':
-#         if request.form['name']:
-#             editedRestaurant.name = request.form['name']
-#             flash('Restaurant Successfully Edited %s' % editedRestaurant.name)
-#             return redirect(url_for('showRestaurants'))
-#     else:
-#         return render_template('editRestaurant.html', restaurant=editedRestaurant)
+@app.route('/zone/<int:zone_id>/edit/', methods=['GET', 'POST'])
+def editZone(zone_id):
+    editedZone = session.query(
+        Zone).filter_by(id=zone_id).one()
+    if 'username' not in login_session:
+        return redirect('/login')
+    if editedZone.user_id != login_session['user_id']:
+        return "<script>function myFunction() {alert('You are not authorized to edit this Zone. Please create your own Zone in order to edit.');}</script><body onload='myFunction()'>"
+    if request.method == 'POST':
+        if request.form['name']:
+            editedZone.name = request.form['name']
+            flash('Zone Successfully Edited %s' % editedZone.name)
+            return redirect(url_for('showZones'))
+    else:
+        return render_template('editZone.html', zone=editedZone)
 
 
 # Delete a restaurant

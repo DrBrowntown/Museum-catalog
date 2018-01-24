@@ -33,20 +33,20 @@
 	<div class="row padding-top padding-bottom">
 		<div class="col-md-1"></div>
 		<div class="col-md-10 padding-none">
-			<a href="{{url_for('newRestaurant')}}">
+			<a href="{{url_for('newZone')}}">
 				<button class="btn btn-default" id="new-restaurant">
-					<span class="glyphicon glyphicon-cutlery" aria-hidden="true"></span>Add Restaurant
+					<span class="glyphicon glyphicon-cutlery" aria-hidden="true"></span>Add Zone
 				</button>
 			</a>
 		</div>
 		<div class="col-md-1"></div>
 	</div>
-	{% for restaurant in restaurants %}
-		<a href = "{{url_for('showMenu', zone_id = zone.id)}}">
+	{% for zone in zones %}
+		<a href = "{{url_for('showObjects', zone_id = zone.id)}}">
 			<div class="row">
 				<div class="col-md-1"></div>
 					<div class="col-md-10 restaurant-list">
-						<h3>{{objects.name}}</h3>
+						<h3>{{Zone.name}}</h3>
 					</div>
 				<div class="col-md-1"></div>
 			</div>

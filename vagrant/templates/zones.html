@@ -1,7 +1,7 @@
 {% extends "main.html" %}
 {% block content %}
 {% include "header.html" %}
-	<div class="row top-menu">
+	<div class="row top-object">
 		<div class="col-md-10"></div>
 		<div class="col-md-2 text-right">
 					</div>
@@ -34,9 +34,9 @@
 		<div class="col-md-1"></div>
 		<div class="col-md-10 padding-none">
 			<a href="{{url_for('newZone')}}">
-				<button class="btn btn-default" id="new-restaurant">
+				<button class="btn btn-default" id="new-zone">
 					<!-- Change cutlery icon -->
-					<span class="glyphicon glyphicon-cutlery" aria-hidden="true"></span>Add Zone
+					<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>Add Zone
 				</button>
 			</a>
 		</div>
@@ -46,7 +46,7 @@
 		<a href = "{{url_for('showObjects', zone_id = zone.id)}}">
 			<div class="row">
 				<div class="col-md-1"></div>
-					<div class="col-md-10 restaurant-list">
+					<div class="col-md-10 zone-list">
 						<h3>{{zone.name}}</h3>
 					</div>
 				<div class="col-md-1"></div>

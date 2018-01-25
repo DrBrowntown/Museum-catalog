@@ -5,7 +5,7 @@
     <div class="row divider green">
         <div class="col-md-12"></div>
     </div>
-    <div class="row banner menu">
+    <div class="row banner object">
         <div class="col-md-11 col-md-offset-1 padding-none">
             <h1>{{ zone.name }}
             
@@ -40,10 +40,10 @@
                 <h2>WALL CLUTCH</h2>
                     {% for i in objects %}
                         {% if i.mount == 'WALL CLUTCH' %}
-                            <div class="menu-item">
+                            <div class="object-item">
                                 <h3>{{i.extension}}</h3>
                                 <p>{{i.name}}</p>
-                                <p class="menu-price">{{i.dimensions}}</p>
+                                <p class="object-dim">{{i.dimensions}}</p>
                                 
                             </div>
                         {% endif %}
@@ -53,10 +53,10 @@
                 <h2>WALL MOUNT</h2>
                     {% for i in objects %}
                         {% if i.mount == 'WALL MOUNT' %}
-                            <div class="menu-item">
+                            <div class="object-item">
                                 <h3>{{i.extension}}</h3>
                                 <p>{{i.name}}</p>
-                                <p class="menu-price">{{i.dimensions}}</p>
+                                <p class="object-dim">{{i.dimensions}}</p>
                                 
                             </div>
                         {% endif %}
@@ -66,10 +66,10 @@
                 <h2>ANTI WALKER</h2>
                      {% for i in objects %}
                         {% if i.mount == 'ANTI WALKER' %}
-                            <div class="menu-item">
+                            <div class="object-item">
                                 <h3>{{i.extension}}</h3>
                                 <p>{{i.name}}</p>
-                                <p class="menu-price">{{i.dimensions}}</p>
+                                <p class="object-dim">{{i.dimensions}}</p>
                                 
                             </div>
                         {% endif %}

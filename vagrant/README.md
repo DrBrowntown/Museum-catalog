@@ -4,7 +4,7 @@ Starter Code for Auth&amp;Auth course
 
 **Note: If you already have a vagrant machine installed from previous Udacity courses skip to the 'Fetch the Source Code and VM Configuration' section**
 
-In Lessons 2,3 and 4 of this course, you'll use a virtual machine (VM) to run a web server and a web app that uses it. The VM is a Linux system that runs on top of your own machine.  You can share files easily between your computer and the VM.
+
 
 We're using the Vagrant software to configure and manage the VM. Here are the tools you'll need to install to get it running:
 
@@ -45,7 +45,7 @@ This will give you a directory named **oauth** complete with the source code for
 Using the terminal, change directory to oauth (**cd oauth**), then type **vagrant up** to launch your virtual machine.
 
 
-## Running the Restaurant Menu App
+## Running the Musuem Object App
 Once it is up and running, type **vagrant ssh**. This will log your terminal into the virtual machine, and you'll get a Linux shell prompt. When you want to log out, type **exit** at the shell prompt.  To turn the virtual machine off (without deleting anything), type **vagrant halt**. If you do this, you'll need to run **vagrant up** again before you can log into it.
 
 
@@ -55,6 +55,6 @@ Type **ls** to ensure that you are inside the directory that contains project.py
 
 Now type **python database_setup.py** to initialize the database.
 
-Type **python lotsofmenus.py** to populate the database with restaurants and menu items. (Optional)
+Type **python museumObjects.py** to populate the database with museum zones and objects. (Optional)
 
-Type **python project.py** to run the Flask web server. In your browser visit **http://localhost:5000** to view the restaurant menu app.  You should be able to view, add, edit, and delete menu items and restaurants.
+Type **python project.py** to run the Flask web server. In your browser visit **http://localhost:5000** to view the museum app.  You should be able to view, add, edit, and delete objects and zones.

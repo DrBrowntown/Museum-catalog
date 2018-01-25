@@ -282,24 +282,26 @@ def gdisconnect():
 
 
 # JSON APIs to view Restaurant Information
-# @app.route('/restaurant/<int:restaurant_id>/menu/JSON')
-# def restaurantMenuJSON(restaurant_id):
-#     restaurant = session.query(Restaurant).filter_by(id=restaurant_id).one()
-#     items = session.query(MenuItem).filter_by(
-#         restaurant_id=restaurant_id).all()
-#     return jsonify(MenuItems=[i.serialize for i in items])
 
+#JSON object for Objects within a zone
+@app.route('/zone/<int:zone_id>/object/JSON')
+def zoneObjectJSON(zone_id):
+    zone = session.query(Zone).filter_by(id=zone_id).one()
+    objects = session.query(Object).filter_by(
+        zone_id=zone_id).all()
+    return jsonify(Objects=[i.serialize for i in objects])
 
-# @app.route('/restaurant/<int:restaurant_id>/menu/<int:menu_id>/JSON')
-# def menuItemJSON(restaurant_id, menu_id):
-#     Menu_Item = session.query(MenuItem).filter_by(id=menu_id).one()
-#     return jsonify(Menu_Item=Menu_Item.serialize)
+#JSON object for single object within a zone
+@app.route('/zone/<int:zone_id>/object/<int:object_id>/JSON')
+def objectJSON(zone_id, object_id):
+    Object_Item = session.query(Object).filter_by(id=object_id).one()
+    return jsonify(Object_Item=Object_Item.serialize)
 
-
-# @app.route('/restaurant/JSON')
-# def restaurantsJSON():
-#     restaurants = session.query(Restaurant).all()
-#     return jsonify(restaurants=[r.serialize for r in restaurants])
+#JSON object for each Zone.
+@app.route('/zone/JSON')
+def zonesJSON():
+    zones = session.query(Zone).all()
+    return jsonify(zones=[r.serialize for r in zones])
 
 
 # Show all zones

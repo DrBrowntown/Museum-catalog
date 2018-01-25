@@ -392,22 +392,23 @@ def newObject(zone_id):
     zone = session.query(Zone).filter_by(id=zone_id).one()
     if login_session['user_id'] != zone.user_id:
         return "<script>function myFunction() {alert('You are not authorized to add objects to this Zone. Please create your own Zone in order to add Objects.');}</script><body onload='myFunction()'>"
-        if request.method == 'POST':
-           
-            newObjectItem = Object(
-                extension=request.form['extension'], 
-                accession=request.form['accession'], 
-                name=request.form['name'], 
-                dimensions=request.form['dimensions'], 
-                mount=request.form['mount'], 
-                misc=request.form['misc'], 
-                zone_id=zone_id, 
-                user_id=zone.user_id
-                )
-            session.add(newObjectItem)
-            session.commit()
-            flash('New Object: %s Successfully Created' % (newObjectItem.name))
-            return redirect(url_for('showObjects', zone_id=zone_id))
+    if request.method == 'POST':
+       
+        newObjectItem = Object(
+            extension=request.form['extension'], 
+            accession=request.form['accession'], 
+            name=request.form['name'], 
+            dimensions=request.form['dimensions'], 
+            mount=request.form['mount'], 
+            misc=request.form['misc'],
+            zone=zone, 
+            zone_id=zone_id, 
+            user_id=zone.user_id
+            )
+        session.add(newObjectItem)
+        session.commit()
+        flash('New Object: %s Successfully Created' % (newObjectItem.name))
+        return redirect(url_for('showObjects', zone_id=zone_id))
     else:
         return render_template('newObject.html', zone_id=zone_id)
 

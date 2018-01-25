@@ -72,6 +72,7 @@ class Object(Base):
     mount = Column(String(25))
     misc = Column(String(250))
     id = Column(Integer, primary_key=True)
+    # look at zones relationship
     zone = relationship(Zone)
     zone_id = Column(Integer, ForeignKey('zone.id'))   
     user = relationship(User)
